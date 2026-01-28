@@ -371,25 +371,27 @@ Designed to support users across different regions and cultures.
 
 ```mermaid
 flowchart TD
-    A([ Start]) --> B([ Browse restaurants and products])
-    B --> C([ Add product to cart])
-    C --> D([ Enter cart])
-    D --> E([ Increase or decrease quantity / Add product])
+    A([Start]) --> B([Browse restaurants and products])
+    B --> C([Add product to cart])
+    C --> D([Enter cart])
+    D --> E([Increase or decrease quantity / Add product])
     E --> F{Quantity = 0?}
-    F -- Yes --> S([ Place order])
-    F -- No --> H([ Continue browsing or proceed to checkout])
-    H --> I([ Choose address: Add new / Select from saved / Use default])
+    F -- Yes --> G([End])
+    F -- No --> H([Continue browsing or proceed to checkout])
+    H --> I([Choose address: Add new / Select from saved / Use default])
     I --> J{Is address available?}
-    J -- No --> K([ Enter new address])
-    J -- Yes --> L([ Choose payment method])
-    L --> M{Pay by card or Cash on Delivery?}
-    M -- Card --> N([ Enter card details])
-    M -- COD --> O([ Confirm order])
-    N --> P([ Check for voucher])
-    O --> P
-    P --> Q{Is voucher available?}
-    Q -- Yes --> R([ Apply voucher])
-    Q -- No --> S([ Place order])
-    R --> S
+    J -- No --> K([Enter new address])
+    J -- Yes --> L([Check for voucher])
+    K --> L
+    L --> M{Is voucher available?}
+    M -- Yes --> N([Apply voucher])
+    M -- No --> O([Choose payment method])
+    N --> O
+    O --> P{Pay by card or Cash on Delivery?}
+    P -- Card --> Q([Enter card details])
+    P -- COD --> R([Confirm order])
+    Q --> R
+    R --> S([Place order])
+```
 
     
