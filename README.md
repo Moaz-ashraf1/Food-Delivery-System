@@ -1,4 +1,4 @@
-# 🍔 Food Delivery System
+# Food Delivery System
 
 ## 📌 About The Project
 
