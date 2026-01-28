@@ -394,4 +394,48 @@ flowchart TD
     R --> S([Place order])
 ```
 
-    
+## 🕝 Sequence Diagram
+
+```mermaid
+sequenceDiagram
+    actor User
+    participant System
+    participant DB
+    participant PaySystem
+    participant SMSSystem
+
+    User->>System: Enter system
+    User->>System: Browse restaurants and products
+    User->>System: Add product to cart
+    System->>User: Show message "View cart"
+    User->>System: Enter cart
+    User->>System: Add/Increase/Decrease quantity
+    alt Quantity = 0
+        System->>User: Send message "There is nothing in your cart yet"
+    else Quantity > 0
+        User->>System: Continue browsing or go to checkout
+        alt Go to checkout
+            System->>DB: Get addresses
+            DB-->>System: Return addresses
+            System->>User: Show addresses
+            alt Use default or saved address
+                User->>System: Choose address
+            else Add new address
+                User->>System: Enter new address details
+                System->>DB: Save new address
+            end
+            User->>System: Enter voucher (if found)
+            alt Pay by card
+                User->>System: Enter card details
+                System->>PaySystem: Send payment request
+                PaySystem-->>System: Send payment response
+                System->>DB: Validate and update payment status
+            else Cash on Delivery
+                User->>System: Place order
+            end
+        end
+    end
+    System->>SMSSystem: Send order confirmation
+    SMSSystem-->>User: Notify order placed
+
+```
