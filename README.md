@@ -8,10 +8,10 @@ The system supports **multi-restaurants**, **multiple payment methods**, **real-
 
 It is built to be:
 
-- 🌍 Multi-country & multi-language ready
-- 🚀 High performance & scalable
-- 🔐 Secure with full payment auditing
-- 📊 Data-driven with detailed insights
+-  Multi-country & multi-language ready
+-  High performance & scalable
+-  Secure with full payment auditing
+-  Data-driven with detailed insights
 
 ---
 
@@ -23,7 +23,7 @@ Below is a structured overview highlighting all the key features available in th
 
 # 👤 User Management Features
 
-## 🔐 Authentication & Account Management
+##  Authentication & Account Management
 
 - **Login**
     
@@ -44,7 +44,7 @@ Below is a structured overview highlighting all the key features available in th
 
 ---
 
-## 🧾 User Profile & Settings
+##  User Profile & Settings
 
 - **View Profile**
     
@@ -58,7 +58,7 @@ Below is a structured overview highlighting all the key features available in th
 
 ---
 
-## 📍 Address Management
+##  Address Management
 
 - **Add Address**
     
@@ -81,7 +81,7 @@ Below is a structured overview highlighting all the key features available in th
 
 # 🔍 Discovery & Browsing Features
 
-## 🍽️ Restaurant & Food Browsing
+##  Restaurant & Food Browsing
 
 - **Browse Restaurants by Category**
     
@@ -98,7 +98,7 @@ Below is a structured overview highlighting all the key features available in th
 
 ---
 
-## ⭐ Ratings & Recommendations
+##  Ratings & Recommendations
 
 - **Top-Rated Restaurants**
     
@@ -111,7 +111,7 @@ Below is a structured overview highlighting all the key features available in th
 
 ---
 
-## 🔃 Sorting & Filtering
+##  Sorting & Filtering
 
 Restaurants can be sorted by:
 
@@ -123,7 +123,7 @@ Restaurants can be sorted by:
 
 ---
 
-## 🔎 Search
+##  Search
 
 - **Search Restaurants**
     
@@ -136,7 +136,7 @@ Restaurants can be sorted by:
 
 ---
 
-## 📌 Nearby Restaurants
+##  Nearby Restaurants
 
 - Detect and display restaurants closest to the user using geolocation data.
 
@@ -197,7 +197,7 @@ Restaurants can be sorted by:
 > Not just a payment gateway — a full financial ecosystem
 > 
 
-## 🔌 Payment Integration
+##  Payment Integration
 
 - Initiate payments via payment API
 - Verify completed payments
@@ -205,7 +205,7 @@ Restaurants can be sorted by:
 
 ---
 
-## ✅ Payment Verification & Validation
+##  Payment Verification & Validation
 
 - Validate Transaction ID (non-duplicate)
 - Verify paid amount matches order amount
@@ -213,7 +213,7 @@ Restaurants can be sorted by:
 
 ---
 
-## 💰 Multiple Payment Methods
+##  Multiple Payment Methods
 
 - Credit Cards
 - Debit Cards
@@ -222,7 +222,7 @@ Restaurants can be sorted by:
 
 ---
 
-## 🔄 Transaction Management
+##  Transaction Management
 
 - **Restaurant Dashboard**
     - View successful, failed, and refunded transactions
@@ -231,7 +231,7 @@ Restaurants can be sorted by:
 
 ---
 
-## ⏱️ Real-Time Payment Status
+##  Real-Time Payment Status
 
 - Pending
 - Completed
@@ -241,13 +241,13 @@ Restaurants can be sorted by:
 
 ---
 
-## 🧾 Digital Receipts
+##  Digital Receipts
 
 - Automatically generate digital receipts for every successful transaction.
 
 ---
 
-## 🔐 Security & Error Handling
+##  Security & Error Handling
 
 - Server-side transaction validation
 - Secure data handling
@@ -255,7 +255,7 @@ Restaurants can be sorted by:
 
 ---
 
-## 🕵️ Auditing & Logging
+##  Auditing & Logging
 
 - Full request & response logging
 - Timestamped payment lifecycle records
@@ -263,7 +263,7 @@ Restaurants can be sorted by:
 
 ---
 
-## 📊 Financial Auditing
+##  Financial Auditing
 
 - Revenue reconciliation
 - Vendor payouts calculation
@@ -286,7 +286,7 @@ Restaurants can be sorted by:
 
 # 📊 Analytics & Dashboard (System)
 
-## 📈 Platform Statistics
+##  Platform Statistics
 
 - Total Restaurants Count
 - Total Customers Count
@@ -298,7 +298,7 @@ Restaurants can be sorted by:
 
 ---
 
-## 💰 Financial Metrics
+##  Financial Metrics
 
 - Daily Transactions Amount
 - Total Transactions Amount
@@ -309,7 +309,7 @@ Restaurants can be sorted by:
 
 # 🏪 Analytics & Dashboard (Restaurant)
 
-## 📦 Order Analytics
+##  Order Analytics
 
 - Daily Orders Count
 - Daily Undelivered Orders
@@ -319,14 +319,14 @@ Restaurants can be sorted by:
 
 ---
 
-## 💰 Financial Analytics
+##  Financial Analytics
 
 - Daily Sales Amount
 - Total Sales Amount
 
 ---
 
-## 📑 Reports & Insights
+##  Reports & Insights
 
 ### Daily Transactions Report
 
@@ -348,7 +348,7 @@ Helps restaurants with:
 
 ---
 
-## 🌐 Localization & Regional Settings
+##  Localization & Regional Settings
 
 Designed to support users across different regions and cultures.
 
@@ -367,7 +367,7 @@ Designed to support users across different regions and cultures.
 ---
 # 📝 USE CASE: PLACE ORDER
 
-## 📊 FLOW CHART
+##  FLOW CHART
 
 ```mermaid
 flowchart TD
@@ -394,7 +394,7 @@ flowchart TD
     R --> S([Place order])
 ```
 
-## 🕝 Sequence Diagram
+##  Sequence Diagram
 
 ```mermaid
 sequenceDiagram
@@ -437,5 +437,72 @@ sequenceDiagram
     end
     System->>SMSSystem: Send order confirmation
     SMSSystem-->>User: Notify order placed
+
+```
+
+##  Pseudocode
+
+```js 
+FUNCTION PlaceOrder(user_id, cart_id, payment_method, address_id, voucher_code):
+
+    // 1. User enters system
+    // Actor: User
+    DISPLAY "Welcome to Food App"
+
+    // 2. User browsing
+    // Actor: User
+    products = System.BrowseRestaurantsAndProducts()
+    UserAddsToCart(cart_id, products)
+
+    // 3. System shows cart message
+    // Actor: System
+    System.ShowMessage("View cart")
+
+    // 4. User enters cart and modifies quantity
+    // Actor: User
+    cart_items = System.GetCartItems(cart_id)
+    UserModifyQuantity(cart_items)
+
+    IF CartIsEmpty(cart_items):
+        // Actor: System
+        System.ShowMessage("There is nothing in your cart yet")
+        RETURN Error("Cart empty")
+    ELSE:
+        UserChoosesNextAction = GetUserChoice("Continue browsing / Checkout")
+        IF UserChoosesNextAction == "Checkout":
+
+            // 5. Address handling
+            // Actor: System & DB
+            addresses = DB.GetAddresses(user_id)
+            chosen_address = UserChooseAddress(addresses)
+
+            IF chosen_address == "New Address":
+                new_address = UserEnterAddressDetails()
+                DB.SaveAddress(user_id, new_address)
+                chosen_address = new_address
+
+            // 6. Voucher
+            voucher = UserEnterVoucher(voucher_code)
+            IF voucher != None:
+                System.ApplyVoucher(voucher)
+
+            // 7. Payment Processing
+            IF payment_method == "Card":
+                card_details = UserEnterCardDetails()
+                TRY:
+                    payment_response = PaySystem.ProcessPayment(card_details, cart_items.total)
+                    System.ValidatePayment(payment_response)
+                    DB.UpdatePaymentStatus(cart_id, payment_response.status)
+                CATCH Exception:
+                    RETURN Error("Payment failed")
+            ELSE IF payment_method == "Cash":
+                System.PlaceOrder(cart_id, chosen_address, payment_method)
+
+            // 8. Notification
+            System.SendNotification("Order confirmed", user_id)
+            SMSSystem.SendSMS("Order placed successfully", user_id)
+
+    RETURN Success("Order completed")
+END FUNCTION
 
 ```
