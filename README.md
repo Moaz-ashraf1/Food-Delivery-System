@@ -364,7 +364,3 @@ Designed to support users across different regions and cultures.
     
     Automatically detects the user’s location using IP address or GPS data on first launch to deliver localized content, pricing, and currency.
     
-
----
-
----
