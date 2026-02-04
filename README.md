@@ -742,10 +742,10 @@ Menu 1 ---- * MenuItem
 
 ---
 
-#### User ↔ Cart
+#### Customer ↔ Cart
 
 ```
-User 1 ---- * Cart
+Customer 1 ---- * Cart
 
 ```
 
