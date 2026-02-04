@@ -506,66 +506,277 @@ FUNCTION PlaceOrder(user_id, cart_id, payment_method, address_id, voucher_code):
 END FUNCTION
 
 ```
-# 🧩 Entity Relationships
-
-###  Entities
-
-* **User**
-* **Cart**
-* **CartItem**
-* **Order**
-* **OrderItem**
-* **Product**
-* **Address**
-* **Payment**
-* **Voucher**
 
 ---
 
-###  Relationships
+# Database ERD 
 
-* **Customer → Order**
+## 🧱 STEP 1: ENTITIES
 
-  * Customer has many Orders
-  * Order belongs to Customer
+### 👤 User & Access
 
-* **Customer → Cart**
+* User
+* UserType
+* Role
+* UserRole
+* Customer
 
-  * Customer has one Cart
-  * Cart belongs to Customer
+---
 
-* **Customer → Address**
+### 🍴 Restaurant & Menu
 
-  * Customer has many Addresses
-  * Address belongs to Customer
+* Restaurant
+* RestaurantDetails
+* RestaurantWorkingHours
+* Menu
+* MenuItem
 
-* **Cart → CartItem**
+---
 
-  * Cart has many CartItems
-  * CartItem belongs to Cart
+### 🛒 Cart
 
-* **CartItem → Product**
+* Cart
+* CartItem
 
-  * CartItem belongs to Product
-  * Product has many CartItems
+---
 
-* **Order → OrderItem**
+## 🧩 STEP 2: ATTRIBUTES 
 
-  * Order has many OrderItems
-  * OrderItem belongs to Order
+### 👤 User
 
-* **OrderItem → Product**
+```
+User
+- user_id (PK)
+- email (Unique)
+- password_hash
+- user_type_id (FK)
+- is_active
+- created_at
+```
 
-  * OrderItem belongs to Product
-  * Product has many OrderItems
+---
 
-* **Order → Payment**
+### 👤 UserType
 
-  * Order has one Payment
-  * Payment belongs to Order
+```
+UserType
+- user_type_id (PK)
+- name (Customer, RestaurantOwner, Admin)
+```
 
-* **Voucher → User**
+---
 
-  * Voucher can be used by many Users
-  * User can use many Vouchers *(logical usage, not ownership)*
+### 👤 Role
+
+```
+Role
+- role_id (PK)
+- name (ManageMenu, ViewOrders, ManageCart)
+```
+
+---
+
+### 👤 UserRole
+
+```
+UserRole
+- user_id (FK)
+- role_id (FK)
+```
+
+---
+
+### 👤 Customer
+
+```
+Customer
+- customer_id (PK)
+- user_id (FK)
+- phone
+- default_address
+```
+
+---
+
+### 🍴 Restaurant
+
+```
+Restaurant
+- restaurant_id (PK)
+- name
+- food_type
+- is_active
+- owner_user_id (FK → User)
+- created_at
+```
+
+---
+
+### 🍴 RestaurantDetails
+
+```
+RestaurantDetails
+- restaurant_id (PK & FK)
+- description
+- phone
+- email
+- address
+- logo_url
+```
+
+---
+
+### 🍴 RestaurantWorkingHours
+
+```
+RestaurantWorkingHours
+- id (PK)
+- restaurant_id (FK)
+- day_of_week
+- open_time
+- close_time
+```
+
+---
+
+### 📋 Menu
+
+```
+Menu
+- menu_id (PK)
+- restaurant_id (FK)
+- name
+- is_active
+```
+
+---
+
+### 📋 MenuItem
+
+```
+MenuItem
+- menu_item_id (PK)
+- menu_id (FK)
+- name
+- description
+- price
+- is_available
+```
+
+---
+
+### 🛒 Cart
+
+```
+Cart
+- cart_id (PK)
+- user_id (FK)
+- status (Active, CheckedOut, Abandoned)
+- created_at
+```
+
+---
+
+### 🛒 CartItem
+
+```
+CartItem
+- cart_item_id (PK)
+- cart_id (FK)
+- menu_item_id (FK)
+- quantity
+- price_at_time
+```
+
+---
+
+## 🔗 STEP 3: RELATIONSHIPS 
+
+#### User ↔ UserType
+
+```
+User * ---- 1 UserType
+```
+
+---
+
+#### User ↔ Role
+
+```
+User * ---- * Role
+(via UserRole)
+```
+
+---
+
+#### User ↔ Customer
+
+```
+User 1 ---- 0..1 Customer
+```
+
+---
+
+#### User ↔ Restaurant
+
+```
+User 1 ---- * Restaurant
+(Owner)
+```
+
+---
+
+#### Restaurant ↔ Menu
+
+```
+Restaurant 1 ---- * Menu
+```
+
+---
+
+#### Menu ↔ MenuItem
+
+```
+Menu 1 ---- * MenuItem
+```
+
+---
+
+#### User ↔ Cart
+
+```
+User 1 ---- * Cart
+
+```
+
+---
+
+#### Cart ↔ CartItem
+
+```
+Cart 1 ---- * CartItem
+```
+
+---
+
+#### MenuItem ↔ CartItem
+
+```
+MenuItem 1 ---- * CartItem
+```
+
+---
+
+## ⛓ STEP 4: CONSTRAINTS
+
+### 🔐 Uniqueness
+
+* User.email UNIQUE
+* UserType.name UNIQUE
+* Role.name UNIQUE
+* MenuItem (menu_id, name) UNIQUE
+
+---
+
+
 
