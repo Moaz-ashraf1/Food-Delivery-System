@@ -778,5 +778,102 @@ MenuItem 1 ---- * CartItem
 
 ---
 
+---
 
+##  ERD Diagram
 
+```mermaid
+---
+config:
+  theme: redux-color
+---
+erDiagram
+    USER {
+        int user_id PK
+        string email UK
+        string password_hash
+        int user_type_id FK
+        boolean is_active
+        datetime created_at
+    }
+    USERTYPE {
+        int user_type_id PK
+        string name UK
+    }
+    ROLE {
+        int role_id PK
+        string name UK
+    }
+    USERROLE {
+        int user_id FK
+        int role_id FK
+    }
+    CUSTOMER {
+        int customer_id PK
+        int user_id FK
+        string phone
+        string default_address
+    }
+    RESTAURANT {
+        int restaurant_id PK
+        string name
+        string food_type
+        boolean is_active
+        int owner_user_id FK
+        datetime created_at
+    }
+    RESTAURANTDETAILS {
+        int restaurant_id PK,FK
+        string description
+        string phone
+        string email
+        string address
+        string logo_url
+    }
+    RESTAURANTWORKINGHOURS {
+        int id PK
+        int restaurant_id FK
+        string day_of_week
+        string open_time
+        string close_time
+    }
+    MENU {
+        int menu_id PK
+        int restaurant_id FK
+        string name
+        boolean is_active
+    }
+    MENUITEM {
+        int menu_item_id PK
+        int menu_id FK
+        string name
+        string description
+        float price
+        boolean is_available
+    }
+    CART {
+        int cart_id PK
+        int user_id FK
+        string status
+        datetime created_at
+    }
+    CARTITEM {
+        int cart_item_id PK
+        int cart_id FK
+        int menu_item_id FK
+        int quantity
+        float price_at_time
+    }
+    USER ||--o{ USERTYPE : "belongs to"
+    USER ||--o{ CUSTOMER : "may have"
+     USER ||--o{ RESTAURANT : "owns"
+CUSTOMER ||--o{ CART : "creates"
+USER ||--o{ USERROLE : "has roles"
+ROLE ||--o{ USERROLE : "assigned to users"
+    RESTAURANT ||--o{ MENU : "has"
+   RESTAURANT ||--|| RESTAURANTDETAILS : "details"
+RESTAURANT ||--o{ RESTAURANTWORKINGHOURS : "working hours"
+    MENU ||--o{ MENUITEM : "contains"
+    CART ||--o{ CARTITEM : "has"
+    MENUITEM ||--o{ CARTITEM : "added to"
+```
