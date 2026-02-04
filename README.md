@@ -778,7 +778,6 @@ MenuItem 1 ---- * CartItem
 
 ---
 
----
 
 ##  ERD Diagram
 
@@ -864,7 +863,7 @@ erDiagram
         int quantity
         float price_at_time
     }
-    USER ||--o{ USERTYPE : "belongs to"
+USERTYPE ||--o{ USER : "has users"
     USER ||--o{ CUSTOMER : "may have"
      USER ||--o{ RESTAURANT : "owns"
 CUSTOMER ||--o{ CART : "creates"
