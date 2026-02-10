@@ -864,7 +864,7 @@ erDiagram
         float price_at_time
     }
 USERTYPE ||--o{ USER : "has users"
-    USER ||--o{ CUSTOMER : "may have"
+    USER ||--|| CUSTOMER : "is a"
      USER ||--o{ RESTAURANT : "owns"
 CUSTOMER ||--o{ CART : "creates"
 USER ||--o{ USERROLE : "has roles"
