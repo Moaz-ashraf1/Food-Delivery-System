@@ -530,13 +530,23 @@ END FUNCTION
 * RestaurantWorkingHours
 * Menu
 * MenuItem
+* RestaurantCategories
 
 ---
 
-### 🛒 Cart
+### 🛒 Cart & Order
 
 * Cart
 * CartItem
+* Order
+* OrderItem
+
+### 💵 Payment
+
+* PaymentMethod
+* TransactionStatus
+* Payment
+* Transaction
 
 ---
 
@@ -936,40 +946,52 @@ erDiagram
         boolean is_active
         datetime created_at
     }
+
     USERTYPE {
         int user_type_id PK
         string name UK
     }
+
     ROLE {
         int role_id PK
         string name UK
     }
+
     USERROLE {
         int user_id FK
         int role_id FK
     }
+
     CUSTOMER {
         int customer_id PK
         int user_id FK
         string phone
         string default_address
     }
+
+    RESTAURANT_CATEGORY {
+        int restaurant_category_id PK
+        string name
+    }
+
     RESTAURANT {
         int restaurant_id PK
         string name
-        string food_type
+        int restaurant_category_id FK
         boolean is_active
         int owner_user_id FK
         datetime created_at
     }
+
     RESTAURANTDETAILS {
-        int restaurant_id PK,FK
+        int restaurant_id PK, FK
         string description
         string phone
         string email
         string address
         string logo_url
     }
+
     RESTAURANTWORKINGHOURS {
         int id PK
         int restaurant_id FK
@@ -977,12 +999,14 @@ erDiagram
         string open_time
         string close_time
     }
+
     MENU {
         int menu_id PK
         int restaurant_id FK
         string name
         boolean is_active
     }
+
     MENUITEM {
         int menu_item_id PK
         int menu_id FK
@@ -991,12 +1015,14 @@ erDiagram
         float price
         boolean is_available
     }
+
     CART {
         int cart_id PK
         int user_id FK
         string status
         datetime created_at
     }
+
     CARTITEM {
         int cart_item_id PK
         int cart_id FK
@@ -1004,16 +1030,87 @@ erDiagram
         int quantity
         float price_at_time
     }
-USERTYPE ||--o{ USER : "has users"
-    USER ||--|| CUSTOMER : "is a"
-     USER ||--o{ RESTAURANT : "owns"
-CUSTOMER ||--o{ CART : "creates"
-USER ||--o{ USERROLE : "has roles"
-ROLE ||--o{ USERROLE : "assigned to users"
-    RESTAURANT ||--o{ MENU : "has"
-   RESTAURANT ||--|| RESTAURANTDETAILS : "details"
-RESTAURANT ||--o{ RESTAURANTWORKINGHOURS : "working hours"
-    MENU ||--o{ MENUITEM : "contains"
-    CART ||--o{ CARTITEM : "has"
-    MENUITEM ||--o{ CARTITEM : "added to"
+
+    ORDER {
+        int order_id PK
+        int customer_id FK
+        int restaurant_id FK
+        int restaurant_category_id FK "Snapshot for history"
+        datetime order_date
+        string status
+        string payment_status
+        float total_amount
+        string currency
+        string delivery_address
+        string notes
+    }
+
+    ORDERITEM {
+        int order_item_id PK
+        int order_id FK
+        int menu_item_id FK
+        int quantity
+        float unit_price
+        float total_price
+    }
+
+    PAYMENT {
+        int payment_id PK
+        int order_id FK
+        int payment_method_id FK
+        float amount
+        string currency
+        string status
+        datetime created_at
+    }
+
+    TRANSACTION {
+        int transaction_id PK
+        int payment_id FK
+        int transaction_status_id FK
+        string gateway_transaction_id
+        float transaction_amount
+        datetime transaction_date
+    }
+
+    PAYMENTMETHOD {
+        int payment_method_id PK
+        string name
+    }
+
+    TRANSACTIONSTATUS {
+        int transaction_status_id PK
+        string name
+    }
+
+    USERTYPE ||--o{ USER : has
+    USER ||--o{ USERROLE : assigned
+    ROLE ||--o{ USERROLE : contains
+
+    USER ||--|| CUSTOMER : is
+    USER ||--o{ RESTAURANT : owns
+
+    CUSTOMER ||--o{ CART : creates
+    CART ||--o{ CARTITEM : has
+    MENUITEM ||--o{ CARTITEM : added_to
+
+    RESTAURANT_CATEGORY ||--o{ RESTAURANT : classifies
+    RESTAURANT ||--o{ MENU : has
+    MENU ||--o{ MENUITEM : contains
+
+    RESTAURANT ||--|| RESTAURANTDETAILS : details
+    RESTAURANT ||--o{ RESTAURANTWORKINGHOURS : works
+
+    CUSTOMER ||--o{ ORDER : places
+    RESTAURANT ||--o{ ORDER : receives
+    RESTAURANT_CATEGORY ||--o{ ORDER : snapshot
+
+    ORDER ||--o{ ORDERITEM : contains
+    MENUITEM ||--o{ ORDERITEM : ordered_as
+
+    ORDER ||--o{ PAYMENT : has_attempts
+    PAYMENTMETHOD ||--o{ PAYMENT : used_in
+
+    PAYMENT ||--o{ TRANSACTION : generates
+    TRANSACTIONSTATUS ||--o{ TRANSACTION : has
 ```
