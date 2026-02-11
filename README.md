@@ -721,6 +721,7 @@ Order
 - order_date
 - status
 - payment_status
+- payment_method
 - total_amount
 - delivery_fee
 - tax_amount
@@ -1038,6 +1039,7 @@ erDiagram
         int restaurant_category_id FK "Snapshot for history"
         datetime order_date
         string status
+        string payment_method
         string payment_status
         float total_amount
         string currency
@@ -1115,37 +1117,46 @@ erDiagram
     TRANSACTIONSTATUS ||--o{ TRANSACTION : has
 ```
 
-## 🛣️ API Endpoints Reference
+----
 
-### 🔐 Authentication
 
-- `POST /api/v1/auth/send-otp` -> Sends OTP to Phone/Email.
-- `POST /api/v1/auth/verify-otp` -> Validates OTP & returns Access Token.
+## 🚀 API Documentation
 
-### 👤 Profile & Addresses
+### 1️⃣ Authentication & Authorization
 
-- `PUT /api/v1/customer/profile` -> Updates names and email.
-- `POST /api/v1/customer/addresses` -> Adds new delivery location.
-- `GET /api/v1/customer/addresses` -> Lists all saved addresses.
-- `DELETE /api/v1/customer/addresses/{id}` -> Removes a specific address.
+| Method | Endpoint | Input (Body/Query) | Output (Success 200/201) |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/auth/send-otp` | `{ "phone": "010..." }` | `{ "message": "OTP sent successfully" }` |
+| `POST` | `/api/v1/auth/verify-otp` | `{ "phone": "010...", "otp": "1234" }` | `{ "token": "jwt_string", "is_new_user": true }` |
 
-### 🔍 Discovery
+### 2️⃣ Profile & Address Management
 
-- `GET /api/v1/categories` -> Lists food categories (Pizza, Burgers...).
-- `GET /api/v1/restaurants` -> Lists restaurants (Filters: `category_id`, `lat/lng`, `search`).
-- `GET /api/v1/restaurants/{id}/menu` -> Returns restaurant info and categorized menu.
+| Method | Endpoint | Input (Body/Query) | Output (Success 200/201) |
+| --- | --- | --- | --- |
+| `PUT` | `/api/v1/profile` | `{ "first_name": "Moaz", "email": ".." }` | `{ "user_id": 1, "status": "updated" }` |
+| `POST` | `/api/v1/addresses` | `{ "street": "...", "lat": 30.1, "lng": 31.2 }` | `{ "address_id": 101, "message": "Address saved" }` |
+| `GET` | `/api/v1/addresses` | `None` | `[{ "id": 101, "street": "...", "is_default": true }]` |
 
-### 🛒 Cart Management
+### 3️⃣ Discovery (Restaurants & Menu)
 
-- `GET /api/v1/cart` -> Fetches active cart items & total price.
-- `POST /api/v1/cart/items` -> Adds item to cart (Checks for same restaurant).
-- `PATCH /api/v1/cart/items/{id}` -> Updates quantity (0 = remove).
-- `DELETE /api/v1/cart` -> Clears the entire cart.
-- `POST /api/v1/cart/voucher` -> Validates and applies discount code.
+| Method | Endpoint | Input (Body/Query) | Output (Success 200) |
+| --- | --- | --- | --- |
+| `GET` | `/api/v1/restaurants` | `?cat_id=1&lat=30.1&lng=31.2` | `[{ "id": 5, "name": "Moaz Burger", "distance": "2km" }]` |
+| `GET` | `/api/v1/restaurants/{id}/menu` | `Path Variable: id` | `{ "restaurant": {}, "categories": [{ "items": [] }] }` |
 
-### 📦 Order & Payment Flow
+### 4️⃣ Cart Management
 
-- `POST /api/v1/orders` -> Converts Cart to Order (Body: `address_id`, `payment_method`).
-- `GET /api/v1/orders` -> Returns user order history (Paginated).
-- `POST /api/v1/payments/initiate` -> Starts payment, creates **Transaction**, and returns Gateway URL.
-- `POST /api/v1/payments/webhook` -> **(Critical)** Receives gateway results and updates Order/Payment status.
+| Method | Endpoint | Input (Body/Query) | Output (Success 200/201) |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/cart/items` | `{ "menu_item_id": 50, "quantity": 1 }` | `{ "cart_id": 1, "total_items": 3 }` |
+| `GET` | `/api/v1/cart` | `None` | `{ "items": [...], "sub_total": 250, "tax": 20 }` |
+| `PATCH` | `/api/v1/cart/items/{id}` | `{ "quantity": 2 }` | `{ "message": "Quantity updated" }` |
+
+### 5️⃣ Order & Payment Flow
+
+| Method | Endpoint | Input (Body/Query) | Output (Success 200/201) |
+| --- | --- | --- | --- |
+| `POST` | `/api/v1/orders` | `{ "address_id": 101, "payment_method": "card" }` | `{ "order_id": 500, "total": 270 }` |
+| `POST` | `/api/v1/payments/initiate` | `{ "order_id": 500 }` | `{ "payment_url": "https://...", "transaction_id": "tx_1" }` |
+| `POST` | `/api/v1/payments/webhook` | `{ "status": "success", "order_id": 500 }` | `{ "status": "acknowledged" }` |
+
