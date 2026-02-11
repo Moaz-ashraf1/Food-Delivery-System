@@ -850,6 +850,62 @@ Cart 1 ---- * CartItem
 MenuItem 1 ---- * CartItem
 ```
 
+
+
+#### Order ↔ Customer
+
+```
+Order * ---- 1 Customer
+```
+
+#### Order ↔ Restaurant
+
+```
+Order * ---- 1 Restaurant
+```
+
+#### Order ↔ RestaurantCategory
+
+```
+Order * ---- 1 RestaurantCategory
+```
+
+#### OrderItem ↔ Order
+
+```
+OrderItem * ---- 1 Order
+```
+#### OrderItem ↔ MenuItem
+
+```
+OrderItem * ---- 1 MenuItem
+```
+
+#### Payment ↔ Order
+
+```
+Payment * ---- 1 Order
+```
+
+#### Payment ↔ PaymentMethod
+
+```
+Payment * ---- 1 PaymentMethod
+```
+
+#### Transaction ↔ Payment
+
+```
+Transaction * ---- 1 Payment
+```
+
+#### Transaction ↔ TransactionStatus
+
+```
+Transaction * ---- 1 TransactionStatus
+```
+
+
 ---
 
 ## ⛓ STEP 4: CONSTRAINTS
