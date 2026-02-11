@@ -598,13 +598,24 @@ Customer
 
 ---
 
+### 🍴 Restaurant Categories
+
+```
+RestaurantCategories
+- restaurant_Categories (PK)
+- name
+```
+
+---
+
+
 ### 🍴 Restaurant
 
 ```
 Restaurant
 - restaurant_id (PK)
 - name
-- food_type
+- category_type (FK)
 - is_active
 - owner_user_id (FK → User)
 - created_at
@@ -660,6 +671,7 @@ MenuItem
 - name
 - description
 - price
+- discount_price
 - is_available
 ```
 
@@ -699,6 +711,8 @@ Order
 - status
 - payment_status
 - total_amount
+- delivery_fee
+- tax_amount
 - currency
 - delivery_address_info
 - notes
@@ -751,6 +765,7 @@ Payment
 Transaction
 - transaction_id (PK)
 - payment_id (FK)
+- gateway_response
 - transaction_status_id (FK)
 - gateway_transaction_id
 - transaction_amount
