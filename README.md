@@ -707,6 +707,7 @@ Order
 - order_id (PK)
 - customer_id (FK)
 - resturant_id (FK)
+- resturant_category_id(FK)
 - order_date
 - status
 - payment_status
