@@ -1120,7 +1120,7 @@ erDiagram
 ----
 
 
-## 🚀 API Documentation
+## 🚀 Food Delivery API Documentation
 
 ### 1️⃣ Authentication & Authorization
 
@@ -1136,6 +1136,8 @@ erDiagram
 | `PUT` | `/api/v1/profile` | `{ "first_name": "Moaz", "email": ".." }` | `{ "user_id": 1, "status": "updated" }` |
 | `POST` | `/api/v1/addresses` | `{ "street": "...", "lat": 30.1, "lng": 31.2 }` | `{ "address_id": 101, "message": "Address saved" }` |
 | `GET` | `/api/v1/addresses` | `None` | `[{ "id": 101, "street": "...", "is_default": true }]` |
+| `DELETE` | `/api/v1/addresses/{id}` | `Path Variable: id` | { "message": "Address Deleted Successfully" } |
+
 
 ### 3️⃣ Discovery (Restaurants & Menu)
 
@@ -1143,6 +1145,7 @@ erDiagram
 | --- | --- | --- | --- |
 | `GET` | `/api/v1/restaurants` | `?cat_id=1&lat=30.1&lng=31.2` | `[{ "id": 5, "name": "Moaz Burger", "distance": "2km" }]` |
 | `GET` | `/api/v1/restaurants/{id}/menu` | `Path Variable: id` | `{ "restaurant": {}, "categories": [{ "items": [] }] }` |
+| `GET` | `/api/v1/categories` | `None` | `[{ "id": 1, "name": "Pizza", "image": "..." }]` |
 
 ### 4️⃣ Cart Management
 
@@ -1151,12 +1154,19 @@ erDiagram
 | `POST` | `/api/v1/cart/items` | `{ "menu_item_id": 50, "quantity": 1 }` | `{ "cart_id": 1, "total_items": 3 }` |
 | `GET` | `/api/v1/cart` | `None` | `{ "items": [...], "sub_total": 250, "tax": 20 }` |
 | `PATCH` | `/api/v1/cart/items/{id}` | `{ "quantity": 2 }` | `{ "message": "Quantity updated" }` |
+| `DELETE` | `/api/v1/cart/items/{id}` | `Path Variable: id` | `{ "message": "Item removed from cart" }` |
+| `DELETE` | `/api/v1/cart` | `None` | `{ "message": "Cart cleared successfully" }` |
+| `POST` | `/api/v1/cart/voucher` | `{ "voucher_code": "MOAZ20" }` | `{ "discount_amount": 50, "new_total": 200 }` |
 
 ### 5️⃣ Order & Payment Flow
 
 | Method | Endpoint | Input (Body/Query) | Output (Success 200/201) |
 | --- | --- | --- | --- |
-| `POST` | `/api/v1/orders` | `{ "address_id": 101, "payment_method": "card" }` | `{ "order_id": 500, "total": 270 }` |
-| `POST` | `/api/v1/payments/initiate` | `{ "order_id": 500 }` | `{ "payment_url": "https://...", "transaction_id": "tx_1" }` |
-| `POST` | `/api/v1/payments/webhook` | `{ "status": "success", "order_id": 500 }` | `{ "status": "acknowledged" }` |
-
+| `GET` | `/api/v1/orders` | `None` (or `?page=1`) | `[{ "order_id": 500, "status": "Delivered", "total": 270 }]` |
+| `GET` | `/api/v1/orders/{id}` | `Path Variable: id` | `{ "id": 500, "items": [...], "status_history": [...] }` |
+| `PATCH` | `/api/v1/orders/{id}/payment-status` | `{ "payment_status": "Paid" }` | `{ "message": "Payment status updated" }` |
+| `PATCH` | `/api/v1/orders/{id}/status` | `{ "status": "On the way" }` | `{ "message": "Order status moved to On the way" }` |
+| `POST` | `/api/v1/orders/{id}/cancel` | `Path Variable: id` | `{ "message": "Order cancelled successfully" }` |
+| `POST` | `/api/v1/orders` | `{ "address_id": 101, "payment_method": "card" }` | { "order_id": 500, "total": 270 } |
+| POST | `/api/v1/payments/initiate` | `{ "order_id": 500 }` | `{ "payment_url": "https://...", "transaction_id": "tx_1" }` |
+| POST | `/api/v1/payments/webhook` | `{ "status": "success", "order_id": 500 }` | `{ "status": "acknowledged" }` |
