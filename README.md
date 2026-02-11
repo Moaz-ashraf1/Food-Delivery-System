@@ -1114,3 +1114,38 @@ erDiagram
     PAYMENT ||--o{ TRANSACTION : generates
     TRANSACTIONSTATUS ||--o{ TRANSACTION : has
 ```
+
+## 🛣️ API Endpoints Reference
+
+### 🔐 Authentication
+
+- `POST /api/v1/auth/send-otp` -> Sends OTP to Phone/Email.
+- `POST /api/v1/auth/verify-otp` -> Validates OTP & returns Access Token.
+
+### 👤 Profile & Addresses
+
+- `PUT /api/v1/customer/profile` -> Updates names and email.
+- `POST /api/v1/customer/addresses` -> Adds new delivery location.
+- `GET /api/v1/customer/addresses` -> Lists all saved addresses.
+- `DELETE /api/v1/customer/addresses/{id}` -> Removes a specific address.
+
+### 🔍 Discovery
+
+- `GET /api/v1/categories` -> Lists food categories (Pizza, Burgers...).
+- `GET /api/v1/restaurants` -> Lists restaurants (Filters: `category_id`, `lat/lng`, `search`).
+- `GET /api/v1/restaurants/{id}/menu` -> Returns restaurant info and categorized menu.
+
+### 🛒 Cart Management
+
+- `GET /api/v1/cart` -> Fetches active cart items & total price.
+- `POST /api/v1/cart/items` -> Adds item to cart (Checks for same restaurant).
+- `PATCH /api/v1/cart/items/{id}` -> Updates quantity (0 = remove).
+- `DELETE /api/v1/cart` -> Clears the entire cart.
+- `POST /api/v1/cart/voucher` -> Validates and applies discount code.
+
+### 📦 Order & Payment Flow
+
+- `POST /api/v1/orders` -> Converts Cart to Order (Body: `address_id`, `payment_method`).
+- `GET /api/v1/orders` -> Returns user order history (Paginated).
+- `POST /api/v1/payments/initiate` -> Starts payment, creates **Transaction**, and returns Gateway URL.
+- `POST /api/v1/payments/webhook` -> **(Critical)** Receives gateway results and updates Order/Payment status.
