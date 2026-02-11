@@ -688,6 +688,75 @@ CartItem
 - price_at_time
 ```
 
+### Order
+
+```
+Order
+- order_id (PK)
+- customer_id (FK)
+- resturant_id (FK)
+- order_date
+- status
+- payment_status
+- total_amount
+- currency
+- delivery_address_info
+- notes
+```
+### Order Item
+
+```
+OrderItem
+- order_item_id (PK)
+- order_id (FK)
+- menu_item_id (FK)
+- quantity
+- unit_price
+- total_price
+
+```
+
+### Payment Method
+
+```
+PaymentMethod
+- payment_method_id (PK)
+- name
+```
+
+### Transaction Status
+
+```
+TransactionStatus
+- transaction_status_id (PK)
+- name
+```
+
+### Payment
+
+```
+Payment
+- payment_id (PK)
+- order_id (FK)
+- Payment_method_id (FK)
+- amount
+- currency
+- status
+- created_At
+```
+
+### Transaction
+
+```
+Transaction
+- transaction_id (PK)
+- payment_id (FK)
+- transaction_status_id (FK)
+- gateway_transaction_id
+- transaction_amount
+- transaction_date
+```
+
 ---
 
 ## 🔗 STEP 3: RELATIONSHIPS 
